@@ -12,7 +12,7 @@ BUILD_DIR = build
 OBJS = \
 	$(BUILD_DIR)/entry.o \
 	$(BUILD_DIR)/main.o \
-	k$(BUILD_DIR)/uart.o
+	$(BUILD_DIR)/uart.o
 
 # 默认目标
 all: $(BUILD_DIR)/kernel.elf
