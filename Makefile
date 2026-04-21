@@ -1,35 +1,45 @@
 CROSS = riscv64-linux-gnu-
 CC = $(CROSS)gcc
 LD = $(CROSS)ld
-OBJCOPY = $(CROSS)objcopy
 
 CFLAGS = -march=rv64gc -mabi=lp64 -ffreestanding -nostdlib -Wall -Wextra
 LDFLAGS = -T linker.ld
 
+# build目录
+BUILD_DIR = build
+
+# 目标文件产物
 OBJS = \
-	kernel/entry.o \
-	kernel/main.o \
-	kernel/uart.o
+	$(BUILD_DIR)/entry.o \
+	$(BUILD_DIR)/main.o \
+	k$(BUILD_DIR)/uart.o
 
-all: kernel.elf
+# 默认目标
+all: $(BUILD_DIR)/kernel.elf
 
-kernel/entry.o: kernel/entry.S
+# 确保 build 目录存在
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+# 编译规则
+$(BUILD_DIR)/entry.o: kernel/entry.S | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-kernel/main.o: kernel/main.c
+$(BUILD_DIR)/main.o: kernel/main.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-kernel/uart.o: kernel/uart.c
+$(BUILD_DIR)/uart.o: kernel/uart.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-kernel.elf: $(OBJS) linker.ld
+# 链接规则
+$(BUILD_DIR)/kernel.elf: $(OBJS) linker.ld
 	$(LD) $(LDFLAGS) $(OBJS) -o $@
 
-run: kernel.elf
+run: $(BUILD_DIR)/kernel.elf
 	qemu-system-riscv64 \
 		-machine virt \
 		-nographic \
-		-kernel kernel.elf
+		-kernel $(BUILD_DIR)/kernel.elf
 
 clean:
-	rm -f kernel/*.o kernel.elf
+	rm -rf $(BUILD_DIR)
