@@ -1,0 +1,17 @@
+# build outputs
+*.o
+*.elf
+*.bin
+*.map
+
+# dependency / asm dump
+*.d
+*.s
+
+# common build dirs
+build/
+out/
+
+# IDE
+.idea/
+.vscode
