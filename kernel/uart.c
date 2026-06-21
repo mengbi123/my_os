@@ -10,7 +10,7 @@
  * @brief 读取寄存器
  */
 static inline uint8_t mmio_read8(uintptr_t addr) {
-    return *(volatile uint8_t*)addr;  /**< 禁止优化读取，强制每一次都读取 */
+    return *(volatile uint8_t*)addr;  /**< 关键字 volatile 禁止优化读取，强制每一次都读取 */
 }
 
 /**

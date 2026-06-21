@@ -12,7 +12,8 @@ BUILD_DIR = build
 OBJS = \
 	$(BUILD_DIR)/entry.o \
 	$(BUILD_DIR)/main.o \
-	$(BUILD_DIR)/uart.o
+	$(BUILD_DIR)/uart.o \
+	$(BUILD_DIR)/print.o
 
 # 默认目标
 all: $(BUILD_DIR)/kernel.elf
@@ -26,10 +27,13 @@ $(BUILD_DIR)/entry.o: kernel/entry.S | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BUILD_DIR)/main.o: kernel/main.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
 
 $(BUILD_DIR)/uart.o: kernel/uart.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+
+$(BUILD_DIR)/print.o: kernel/print.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
 
 # 链接规则
 $(BUILD_DIR)/kernel.elf: $(OBJS) linker.ld

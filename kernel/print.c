@@ -50,3 +50,18 @@ void uart_putdec(uint64_t value)
         uart_putc(buf[--i]);
     }
 }
+
+/**
+ * @brief 内核崩溃处理
+ */
+void panic(const char *msg)
+{
+    uart_puts("\n[PANIC] ");
+    uart_puts(msg);
+    uart_puts("\n");
+
+    while(1)
+    {
+        __asm__ volatile("wfi");    /**< wfi 是RISC-V电源管理指令，执行后CPU停止执行指令流水线 */
+    }
+}
