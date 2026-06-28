@@ -2,9 +2,11 @@
  * @file print.c
  * @brief 实现内核打印功能
  */
+
+#include <stdint.h>
+
 #include "uart.h"
 #include "print.h"
-#include <stdint.h>
 
 /**
  * @brief 将一个64位整数以十六进制格式打印到串口

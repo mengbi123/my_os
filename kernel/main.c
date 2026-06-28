@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "uart.h"
 #include "print.h"
+#include "trap.h"
 
 /**
  * @brief 证书读取函数，读取CSR寄存器
@@ -40,6 +41,8 @@ void kmain(void){
     uart_puts("sp: ");
     uart_puthex(read_sp());
     uart_puts("\n");
+
+    trap_init();
 
     uart_puts("Kernel boot success.\n");
 

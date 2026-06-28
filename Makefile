@@ -13,7 +13,9 @@ OBJS = \
 	$(BUILD_DIR)/entry.o \
 	$(BUILD_DIR)/main.o \
 	$(BUILD_DIR)/uart.o \
-	$(BUILD_DIR)/print.o
+	$(BUILD_DIR)/print.o \
+	$(BUILD_DIR)/trap.o \
+	$(BUILD_DIR)/trap_entry.o
 
 # 默认目标
 all: $(BUILD_DIR)/kernel.elf
@@ -34,6 +36,12 @@ $(BUILD_DIR)/uart.o: kernel/uart.c | $(BUILD_DIR)
 
 $(BUILD_DIR)/print.o: kernel/print.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+
+$(BUILD_DIR)/trap.o: kernel/trap.c
+	$(CC) $(CFLAGS) -Iinclude -c $< -o $@
+
+$(BUILD_DIR)/trap_entry.o: kernel/trap.S
+	$(CC) $(CFLAGS) -c $< -o $@
 
 # 链接规则
 $(BUILD_DIR)/kernel.elf: $(OBJS) linker.ld
